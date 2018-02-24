@@ -247,7 +247,7 @@ class UavtalkDemo():
         while GPIO.input(distance_pin5_read) == 1:
             stop5 = time.time()
 
-        return distance5 = (stop5 - start5) * 34000 / 2
+        return (stop5 - start5) * 34000 / 2
 
 
     def calculateDc(self, value):
@@ -375,21 +375,21 @@ def main(args):
 
     try:
         demo = UavtalkDemo()
-        if args.action is "1":
+        if args.action == "1":
             demo.startup()
-        elif args.action is "2":
+        elif args.action == "2":
             demo.move()
-        elif args.action is "forward":
+        elif args.action == "forward":
             demo.forward()
-        elif args.action is "backward":
+        elif args.action == "backward":
             demo.backward()
-        elif args.action is "sidewards":
+        elif args.action == "sidewards":
             demo.sidwards()
-        elif args.action is "yaw":
+        elif args.action == "yaw":
             demo.yaw()
-        elif args.action is "3":
+        elif args.action == "3":
             demo.photo()
-        elif args.action is "run_routine":
+        elif args.action == "run_routine":
             demo.driveServo()  # will not return
 
         demo.throttle_var.stop()
