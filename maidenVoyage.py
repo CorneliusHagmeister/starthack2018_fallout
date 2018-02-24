@@ -104,11 +104,18 @@ class UavtalkDemo():
 
     def driveServo(self):
 
+        print "drive servo"
         # start up the rotors but not moving yet
-        self.throttle(1600)
+        self.throttle(1000)
         sleep(5)
 
-        self.throttle(1200)
+        self.throttle(1010)
+        sleep(5)
+
+        self.throttle(1050)
+        sleep(5)
+
+        self.throttle(1100)
         sleep(5)
         #
         # self.throttle(1100)
@@ -207,22 +214,24 @@ def printUsage():
 def main(args):
 
     # Log everything, and send it to stderr.
-    logging.basicConfig(level=logging.INFO)
+    #logging.basicConfig(level=logging.INFO)
 
-    try:
-        demo = UavtalkDemo()
-        if args.action is "throttle":
-            demo.throttle(args.value)
-            sleep(5)
-        elif args.action is "pitch":
-            demo.pith(args.value)
-            sleep(5)
-        elif args.action is "yaw":
-            demo.yaw(args.value)
-            sleep(5)
-        elif args.action is "run_routine":
-            demo.driveServo()  # will not return
-            sleep(5)
+    # try:
+    #     demo = UavtalkDemo()
+    #     if args.action is "throttle":
+    #         demo.throttle(args.value)
+    #         sleep(5)
+    #     elif args.action is "pitch":
+    #         demo.pith(args.value)
+    #         sleep(5)
+    #     elif args.action is "yaw":
+    #         demo.yaw(args.value)
+    #         sleep(5)
+    #     elif args.action is "run_routine":
+    #         demo.driveServo()  # will not return
+    #         sleep(5)
+    demo = UavtalkDemo()
+    demo.driveServo()
 
     except KeyboardInterrupt:
         pass
