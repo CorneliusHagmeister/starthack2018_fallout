@@ -291,7 +291,7 @@ class UavtalkDemo():
                     return False
 
     def startup(self):
-
+        print "startup initiated"
         # wait until lights are green
         while not self.generator_working():
             sleep(1)
@@ -309,6 +309,7 @@ class UavtalkDemo():
         return False
 
     def forward(self):
+        print "moving forward"
         try:
             self.pitch(1200)
             self.throttle(1700)
@@ -318,6 +319,7 @@ class UavtalkDemo():
             print "stopped by user"
 
     def backward(self):
+        print "moving backward"
         try:
             self.pitch(1800)
             self.throttle(1700)
@@ -327,6 +329,7 @@ class UavtalkDemo():
             print "stopped by user"
 
     def yaw(self):
+        print "turning around"
         try:
             self.yaw(1800)
             while True:
@@ -335,6 +338,7 @@ class UavtalkDemo():
             print "stopped by user"
 
     def sidewards(self):
+        print "moving sidwards"
         try:
             self.roll(1800)
             self.throttle(1700)
