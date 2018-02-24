@@ -141,6 +141,7 @@ class UavtalkDemo():
         return (value - 1000) / 10
 
     def throttle(self, value):
+        print "called throttle"
         self.throttle_var.ChangeDutyCycle(self.calculateDc(value))  # where 0.0 <= dc <= 100.0
 
     def roll(self, value):
@@ -210,8 +211,6 @@ def main(args):
     if args.action != "" and args.value is "":
         sys.exit(2)
 
-    port = args.port
-
     # Log everything, and send it to stderr.
     logging.basicConfig(level=logging.INFO)
 
@@ -253,6 +252,5 @@ if __name__ == '__main__':
                         help='an integer for the accumulator')
     parser.add_argument('--action', help='throttle, pitch, yaw, run_routine')
     parser.add_argument('--value')
-    parser.add_argument('port', help='set the port  which is used to control the actuators')
     args = parser.parse_args()
     main(parser.parse_args())
