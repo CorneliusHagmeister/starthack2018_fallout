@@ -10,21 +10,23 @@ import math
 from time import sleep
 import RPi.GPIO as GPIO
 
-#set up GPIO
-GPIO.setmode(GPIO.BOARD)
-
-throttle_pin = 7
-pitch_pin = 37
-yaw_pin = 22
-roll_pin = 32
-
 class UavtalkDemo():
     def __init__(self):
-        print throttle_pin
+        #set up GPIO
+        GPIO.setmode(GPIO.BOARD)
+        GPIO.setwarnings(False)
+
+        throttle_pin = 36
+        pitch_pin = 37
+        yaw_pin = 40
+        roll_pin = 38
+        arm_pin = 32
+
         GPIO.setup(throttle_pin, GPIO.OUT)
         GPIO.setup(pitch_pin, GPIO.OUT)
         GPIO.setup(yaw_pin, GPIO.OUT)
         GPIO.setup(roll_pin, GPIO.OUT)
+
         self.throttle_var = GPIO.PWM(throttle_pin, 50)
         self.throttle_var.start(0)
         self.yaw_var = GPIO.PWM(yaw_pin, 50)
@@ -107,6 +109,8 @@ class UavtalkDemo():
 
         print "drive servo"
         # start up the rotors but not moving yet
+        sleep(3)
+
         self.throttle(1000)
         sleep(5)
 
@@ -146,7 +150,7 @@ class UavtalkDemo():
         # sleep(4)
 
     def calculateDc(self, value):
-        return (value - 1000) / 10
+        return ((value - 1000) / 10)
 
     def throttle(self, value):
         print "called throttle"
