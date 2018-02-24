@@ -10,6 +10,18 @@ import math
 from time import sleep
 import RPi.GPIO as GPIO
 
+distance_pin1_trigger = 11
+distance_pin2_trigger = 13
+distance_pin3_trigger = 16
+distance_pin4_trigger = 29
+distance_pin5_trigger = 33
+
+distance_pin1_read = 12
+distance_pin2_read = 15
+distance_pin3_read = 18
+distance_pin4_read = 31
+distance_pin5_read = 35
+
 class UavtalkDemo():
     def __init__(self):
         #set up GPIO
@@ -28,6 +40,18 @@ class UavtalkDemo():
         GPIO.setup(roll_pin, GPIO.OUT)
         GPIO.setup(arm_pin, GPIO.OUT)
 
+        GPIO.setup(distance_pin1_trigger, GPIO.OUT)
+        GPIO.setup(distance_pin2_trigger, GPIO.OUT)
+        GPIO.setup(distance_pin3_trigger, GPIO.OUT)
+        GPIO.setup(distance_pin4_trigger, GPIO.OUT)
+        GPIO.setup(distance_pin5_trigger, GPIO.OUT)
+
+        GPIO.setup(distance_pin1_read, GPIO.IN)
+        GPIO.setup(distance_pin2_read, GPIO.IN)
+        GPIO.setup(distance_pin3_read, GPIO.IN)
+        GPIO.setup(distance_pin4_read, GPIO.IN)
+        GPIO.setup(distance_pin5_read, GPIO.IN)
+
         GPIO.output(arm_pin, GPIO.HIGH)
         self.throttle_var = GPIO.PWM(throttle_pin, 50)
         self.throttle_var.start(7)
@@ -37,6 +61,13 @@ class UavtalkDemo():
         self.pitch_var.start(7)
         self.roll_var = GPIO.PWM(roll_pin, 50)
         self.roll_var.start(7)
+
+        GPIO.output(distance_pin1_trigger, GPIO.HIGH)
+        GPIO.output(distance_pin2_trigger, GPIO.HIGH)
+        GPIO.output(distance_pin3_trigger, GPIO.HIGH)
+        GPIO.output(distance_pin4_trigger, GPIO.HIGH)
+        GPIO.output(distance_pin5_trigger, GPIO.HIGH)
+
 
     def fullRun(self):
 
@@ -115,6 +146,12 @@ class UavtalkDemo():
 
         self.throttle(1010)
         sleep(5)
+
+        print GPIO.input(distance_pin1_read)
+        print GPIO.input(distance_pin2_read)
+        print GPIO.input(distance_pin3_read)
+        print GPIO.input(distance_pin4_read)
+        print GPIO.input(distance_pin5_read)
 
         self.throttle(1050)
         sleep(5)
