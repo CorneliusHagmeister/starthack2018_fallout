@@ -54,7 +54,6 @@ class UavtalkDemo():
         GPIO.setup(distance_pin4_read, GPIO.IN)
         GPIO.setup(distance_pin5_read, GPIO.IN)
 
-        GPIO.output(arm_pin, GPIO.HIGH)
         self.throttle_var = GPIO.PWM(throttle_pin, 50)
         self.throttle_var.start(7)
         self.yaw_var = GPIO.PWM(yaw_pin, 50)
@@ -63,12 +62,8 @@ class UavtalkDemo():
         self.pitch_var.start(7)
         self.roll_var = GPIO.PWM(roll_pin, 50)
         self.roll_var.start(7)
-
-        GPIO.output(distance_pin1_trigger, GPIO.HIGH)
-        GPIO.output(distance_pin2_trigger, GPIO.HIGH)
-        GPIO.output(distance_pin3_trigger, GPIO.HIGH)
-        GPIO.output(distance_pin4_trigger, GPIO.HIGH)
-        GPIO.output(distance_pin5_trigger, GPIO.HIGH)
+        self.arm_var = GPIO.PWM(arm_pin, 50)
+        self.arm_var.start(7)
 
     def fullRun(self):
 
@@ -268,6 +263,9 @@ class UavtalkDemo():
     def yaw(self, value):
         self.yaw_var.ChangeDutyCycle(self.calculateDc(value))  # where 0.0 <= dc <= 100.0
 
+    def arm(self, value):
+        self.arm_var.ChangeDutyCycle(self.calculateDc(value))
+
     def generator_working(self, capture_file):
         with picamera.PiCamera() as camera:
             with picamera.array.PiRGBArray(camera) as stream:
@@ -297,11 +295,14 @@ class UavtalkDemo():
     def startup(self):
         print "startup initiated"
         # wait until lights are green
+        self.throttle(1000)
+        self.arm(1000)
         while not self.generator_working(False):
             sleep(1)
 
         # drone must accelerate audibly
         self.throttle(2000)
+        self.arm(2000)
         # drone must level itself audibly to height
 
         while True:
@@ -329,6 +330,8 @@ class UavtalkDemo():
         try:
             self.pitch(1200)
             self.throttle(1700)
+            self.arm(1700)
+
             while True:
                 sleep(1)
         except KeyboardInterrupt as e:
@@ -339,6 +342,8 @@ class UavtalkDemo():
         try:
             self.pitch(1800)
             self.throttle(1700)
+            self.arm(1700)
+
             while True:
                 sleep(1)
         except KeyboardInterrupt as e:
@@ -358,6 +363,7 @@ class UavtalkDemo():
         try:
             self.roll(1800)
             self.throttle(1700)
+            self.arm(1700)
             while True:
                 sleep(1)
         except KeyboardInterrupt as e:
