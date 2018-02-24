@@ -3,6 +3,7 @@ import serial
 import traceback
 import sys
 
+from time import sleep
 from librepilot.uavtalk.uavobject import *
 from librepilot.uavtalk.uavtalk import *
 from librepilot.uavtalk.objectManager import *
@@ -121,42 +122,58 @@ class UavtalkDemo():
         self.objMan.ActuatorCommand.metadata.updated()
 
         while True:
-            self.objMan.ActuatorCommand.Channel.value[0] = 1000
-            self.objMan.ActuatorCommand.updated()
-            time.sleep(1)
+            throttle(1100)
+            sleep(2)
 
-            self.objMan.ActuatorCommand.Channel.value[0] = 2000
-            self.objMan.ActuatorCommand.updated()
-            time.sleep(1)
+            throttle(1700)
+            sleep(1)
 
+            throttle(1500)
+            yaw(1000)
+            sleep(3)
+
+            yaw(2000)
+            sleep(3)
+
+            yaw(1000)
+            sleep(3)
+
+            throttle(1700)
+            pitch(1400)
+            sleep(1)
+
+            pitch(1600)
+            throttle(1000)
+            sleep(4)
+
+    def throttle(self, value):
+        self.objMan.ActuatorCommand.Channel.value[0] = value
+        self.objMan.ActuatorCommand.updated()
+
+    def roll(self, value):
+        self.objMan.ActuatorCommand.Channel.value[1] = value
+        self.objMan.ActuatorCommand.updated()
+
+    def pitch(self, value):
+        self.objMan.ActuatorCommand.Channel.value[2] = value
+        self.objMan.ActuatorCommand.updated()
+
+    def yaw(self, value):
+        self.objMan.ActuatorCommand.Channel.value[3] = value
+        self.objMan.ActuatorCommand.updated()
 
 def printUsage():
     appName = os.path.basename(sys.argv[0])
-    print
-    print "usage:"
-    print "  %s port o|w|g|s" % appName
-    print "  o: Show Attitude using an \"observer\""
-    print "  w: Show Attitude waiting for updates from flight"
-    print "  g: Show Attitude performing get operations"
-    print "  s: Drive Servo"
-    print
-    print "  for example: %s COM30 o" % appName
-    print
 
 
 if __name__ == '__main__':
 
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 2:
         print "ERROR: Incorrect number of arguments"
         printUsage()
         sys.exit(2)
 
-    port, option = sys.argv[1:]
-
-    if option not in ["o", "w", "g", "s"]:
-        print "ERROR: Invalid option"
-        printUsage()
-        sys.exit(2)
+    port = sys.argv[1]
 
     # Log everything, and send it to stderr.
     logging.basicConfig(level=logging.INFO)
@@ -165,14 +182,7 @@ if __name__ == '__main__':
         demo = UavtalkDemo()
         demo.setup(port)
 
-        if option == "o":
-            demo.showAttitudeViaObserver()  # will not return
-        elif option == "w":
-            demo.showAttitudeViaWait()  # will not return
-        if option == "g":
-            demo.showAttitudeViaGet()  # will not return
-        if option == "s":
-            demo.driveServo()  # will not return
+        demo.driveServo()  # will not return
 
     except KeyboardInterrupt:
         pass
