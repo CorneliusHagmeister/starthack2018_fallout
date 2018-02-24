@@ -206,12 +206,6 @@ class UavtalkDemo():
         distance5 = (stop5 - start5) * 34000 / 2
         print(distance5)
 
-        print GPIO.input(distance_pin1_read)
-        print GPIO.input(distance_pin2_read)
-        print GPIO.input(distance_pin3_read)
-        print GPIO.input(distance_pin4_read)
-        print GPIO.input(distance_pin5_read)
-
         self.throttle(1050)
         sleep(1)
 
@@ -284,7 +278,14 @@ class UavtalkDemo():
                 else:
                     return False
 
+    def startup:
+        return False
 
+    def move:
+        return False
+
+    def phhoto:
+        return False
 
     def rgb2hsv(self, r, g, b):
         r, g, b = r / 255.0, g / 255.0, b / 255.0
@@ -317,22 +318,16 @@ def main(args):
     # Log everything, and send it to stderr.
     #logging.basicConfig(level=logging.INFO)
 
-    # try:
-    #     demo = UavtalkDemo()
-    #     if args.action is "throttle":
-    #         demo.throttle(args.value)
-    #         sleep(5)
-    #     elif args.action is "pitch":
-    #         demo.pith(args.value)
-    #         sleep(5)
-    #     elif args.action is "yaw":
-    #         demo.yaw(args.value)
-    #         sleep(5)
-    #     elif args.action is "run_routine":
-    #         demo.driveServo()  # will not return
-    #         sleep(5)
-    demo = UavtalkDemo()
-    demo.driveServo()
+    try:
+        demo = UavtalkDemo()
+        if args.action is "1":
+            demo.startup()
+        elif args.action is "2":
+            demo.move()
+        elif args.action is "3":
+            demo.photo()
+        elif args.action is "run_routine":
+            demo.driveServo()  # will not return
 
     demo.throttle_var.stop()
     demo.pitch_var.stop()
