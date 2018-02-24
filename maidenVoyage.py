@@ -279,7 +279,7 @@ class UavtalkDemo():
                 red_green_balance=0
                 for i in range(0,stream.array.shape[0]):
                     for j in range(0,stream.array.shape[1]):
-                        h,s,v = self.rgb2hsv(stream.array[i][j][0],stream.array[i][j][1],stream.array[i]]j|[2])
+                        h,s,v = self.rgb2hsv(stream.array[i][j][0],stream.array[i][j][1],stream.array[i][j][2])
                         if v <50:
                             if h<60 or h>300:
                                 red_green_balance-=1
