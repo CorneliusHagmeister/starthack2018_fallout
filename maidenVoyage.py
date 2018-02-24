@@ -25,7 +25,7 @@ distance_pin5_read = 35
 
 class UavtalkDemo():
     def __init__(self):
-        photo_count = 0
+        self.photo_count = 0
         #set up GPIO
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
