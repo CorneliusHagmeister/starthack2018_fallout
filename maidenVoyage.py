@@ -331,10 +331,11 @@ def main(args):
         elif args.action is "run_routine":
             demo.driveServo()  # will not return
 
-    demo.throttle_var.stop()
-    demo.pitch_var.stop()
-    demo.yaw_var.stop()
-    demo.roll_var.stop()
+        demo.throttle_var.stop()
+        demo.pitch_var.stop()
+        demo.yaw_var.stop()
+        demo.roll_var.stop()
+        
     GPIO.cleanup()
 
 
