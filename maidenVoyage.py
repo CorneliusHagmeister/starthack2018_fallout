@@ -277,8 +277,8 @@ class UavtalkDemo():
                 # Show size of RGB data
                 print(stream.array.shape)
                 red_green_balance=0
-                for i in range(0,stream.array.shape[0]/3):
-                    h,s,v = self.rgb2hsv(stream.array[i],stream.array[i+1],stream.array[i+2])
+                for i in range(0,stream.array.shape[0]):
+                    h,s,v = self.rgb2hsv(stream.array[i][0],stream.array[i][1],stream.array[i][2])
                     if v <50:
                         if h<60 or h>300:
                             red_green_balance-=1
