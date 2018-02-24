@@ -345,7 +345,7 @@ class UavtalkDemo():
         except KeyboardInterrupt as e:
             print "stopped by user"
 
-    def yaw(self):
+    def yaw_usr(self):
         print "turning around"
         try:
             self.yaw(1800)
@@ -403,7 +403,7 @@ def main(args):
         elif args.action == "sidewards":
             demo.sidwards()
         elif args.action == "yaw":
-            demo.yaw()
+            demo.yaw_usr()
         elif args.action == "3":
             demo.photo()
         elif args.action == "run_routine":
