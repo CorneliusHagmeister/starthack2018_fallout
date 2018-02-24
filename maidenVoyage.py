@@ -241,7 +241,7 @@ class UavtalkDemo():
         # self.throttle(1000)
         # sleep(4)
 
-    def getBottomDistance():
+    def getBottomDistance(self):
         GPIO.output(distance_pin5_trigger, 0)
         while GPIO.input(distance_pin5_read) == 0:
             start5 = time.time()
