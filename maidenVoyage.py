@@ -7,11 +7,20 @@ import picamera.array
 import math
 
 from time import sleep
-from librepilot.uavtalk.uavobject import *
-from librepilot.uavtalk.uavtalk import *
-from librepilot.uavtalk.objectManager import *
-from librepilot.uavtalk.connectionManager import *
+import RPi.GPIO as GPIO
 
+#set up GPIO
+GPIO.setmode(GPIO.BOARD)
+
+throttle_pin = 7
+pitch_pin = 37
+yaw_pin = 22
+roll_pin = 32
+
+GPIO.setup(throttle_pin, GPIO.OUT)
+GPIO.setup(pitch_pin, GPIO.OUT)
+GPIO.setup(yaw_pin, GPIO.OUT)
+GPIO.setup(roll_pin, GPIO.OUT)
 
 def _hex02(value):
     return "%02X" % value
@@ -19,105 +28,14 @@ def _hex02(value):
 
 class UavtalkDemo():
     def __init__(self):
-        self.nbUpdates = 0
-        self.lastRateCalc = time.time()
-        self.updateRate = 0
-        self.objMan = None
-        self.connMan = None
-
-    def setup(self, port):
-        print "Opening Port \"%s\"" % port
-        if port[:3].upper() == "COM":
-            _port = int(port[3:]) - 1
-        else:
-            _port = port
-        serPort = serial.Serial(_port, 57600, timeout=.5)
-        if not serPort.isOpen():
-            raise IOError("Failed to open serial port")
-
-        print "Creating UavTalk"
-        self.uavTalk = UavTalk(serPort, None)
-
-        print "Starting ObjectManager"
-        self.objMan = ObjManager(self.uavTalk)
-        self.objMan.importDefinitions()
-
-        print "Starting UavTalk"
-        self.uavTalk.start()
-
-        print "Starting ConnectionManager"
-        self.connMan = ConnectionManager(self.uavTalk, self.objMan)
-
-        print "Connecting...",
-        self.connMan.connect()
-        print "Connected"
-
-        print "Getting all Data"
-        self.objMan.requestAllObjUpdate()
-
-    # print "SN:",
-    # sn = self.objMan.FirmwareIAPObj.CPUSerial.value
-    # print "".join(map(_hex02, sn))
-
-    def stop(self):
-        if self.uavTalk:
-            print "Stopping UavTalk"
-            self.uavTalk.stop()
-
-    def showAttitudeViaObserver(self):
-        print "Request fast periodic updates for AttitudeState"
-        self.objMan.AttitudeState.metadata.telemetryUpdateMode = UAVMetaDataObject.UpdateMode.PERIODIC
-        self.objMan.AttitudeState.metadata.telemetryUpdatePeriod.value = 50
-        self.objMan.AttitudeState.metadata.updated()
-
-        print "Install Observer for AttitudeState updates\n"
-        self.objMan.regObjectObserver(self.objMan.AttitudeState, self, "_onAttitudeUpdate")
-        # Spin until we get interrupted
-        while True:
-            time.sleep(1)
-
-    def showAttitudeViaWait(self):
-        print "Request fast periodic updates for AttitudeState"
-        self.objMan.AttitudeState.metadata.telemetryUpdateMode = UAVMetaDataObject.UpdateMode.PERIODIC
-        self.objMan.AttitudeState.metadata.telemetryUpdatePeriod.value = 50
-        self.objMan.AttitudeState.metadata.updated()
-
-        while True:
-            self.objMan.AttitudeState.waitUpdate()
-            self._onAttitudeUpdate(self.objMan.AttitudeState)
-
-    def showAttitudeViaGet(self):
-        while True:
-            self.objMan.AttitudeState.getUpdate()
-            self._onAttitudeUpdate(self.objMan.AttitudeState)
-
-    def _onAttitudeUpdate(self, args):
-        self.nbUpdates += 1
-
-        now = time.time()
-        if now - self.lastRateCalc > 1:
-            self.updateRate = self.nbUpdates / (now - self.lastRateCalc)
-            self.lastRateCalc = now
-            self.nbUpdates = 0
-
-        if self.nbUpdates & 1:
-            dot = "."
-        else:
-            dot = " "
-
-        print " %s Rate: %02.1f Hz  " % (dot, self.updateRate),
-
-        roll = self.objMan.AttitudeState.Roll.value
-        print "RPY: %f %f %f " % (self.objMan.AttitudeState.Roll.value, self.objMan.AttitudeState.Pitch.value,
-                                  self.objMan.AttitudeState.Yaw.value) + " "
-
-    # return
-    #    print "Roll: %f " % roll,
-    #    i = roll/90
-    #    if i<-1: i=-1
-    #    if i>1: i= 1
-    #    i = int((i+1)*15)
-    #    print "-"*i+"*"+"-"*(30-i)+" \r",
+        self.throttle_var = GPIO.PWM(throttle_pin, 50)
+        self.throttle_var.start(0)
+        self.yaw_var = GPIO.PWM(yaw_pin, 50)
+        self.yaw_var.start(0)
+        self.pitch_var = GPIO.PWM(pitch_pin, 50)
+        self.pitch_var.start(0)
+        self.roll_var = GPIO.PWM(roll_pin, 50)
+        self.roll_var.start(0)
 
     def fullRun(self):
         print "Taking control of self.actuatorCmd"
@@ -189,52 +107,51 @@ class UavtalkDemo():
         sleep(10)
 
     def driveServo(self):
-        print "Taking control of self.actuatorCmd"
-        self.objMan.ActuatorCommand.metadata.access = UAVMetaDataObject.Access.READONLY
-        self.objMan.ActuatorCommand.metadata.updated()
 
         # start up the rotors but not moving yet
         self.throttle(1100)
-        sleep(2)
-        print "I am working so well : ",self.generator_working()
 
-        # lift up for 1 sec
-        self.throttle(1700)
-        sleep(1)
+        #
+        # self.throttle(1100)
+        # sleep(2)
+        # print "I am working so well : ",self.generator_working()
+        #
+        # # lift up for 1 sec
+        # self.throttle(1700)
+        # sleep(1)
+        #
+        # self.throttle(1500)
+        # self.yaw(1000)
+        # sleep(3)
+        #
+        # self.yaw(2000)
+        # sleep(3)
+        #
+        # self.yaw(1000)
+        # sleep(3)
+        #
+        # self.throttle(1700)
+        # self.pitch(1400)
+        # sleep(1)
+        #
+        # self.pitch(1600)
+        # self.throttle(1000)
+        # sleep(4)
 
-        self.throttle(1500)
-        self.yaw(1000)
-        sleep(3)
-
-        self.yaw(2000)
-        sleep(3)
-
-        self.yaw(1000)
-        sleep(3)
-
-        self.throttle(1700)
-        self.pitch(1400)
-        sleep(1)
-
-        self.pitch(1600)
-        self.throttle(1000)
-        sleep(4)
+    def calculateDc(self, value):
+        return (value - 1000) / 10
 
     def throttle(self, value):
-        self.objMan.ActuatorCommand.Channel.value[0] = value
-        self.objMan.ActuatorCommand.updated()
+        self.throttle_var.ChangeDutyCycle(self.calculateDc(1100))  # where 0.0 <= dc <= 100.0
 
     def roll(self, value):
-        self.objMan.ActuatorCommand.Channel.value[1] = value
-        self.objMan.ActuatorCommand.updated()
+        GPIO.output()
 
     def pitch(self, value):
-        self.objMan.ActuatorCommand.Channel.value[2] = value
-        self.objMan.ActuatorCommand.updated()
+        GPIO.output()
 
     def yaw(self, value):
-        self.objMan.ActuatorCommand.Channel.value[3] = value
-        self.objMan.ActuatorCommand.updated()
+        GPIO.output()
 
     def generator_working(self):
         with picamera.PiCamera() as camera:
@@ -294,14 +211,10 @@ if __name__ == '__main__':
         printUsage()
         sys.exit(2)
 
-    port = sys.argv[1] or "/dev/ttyAMA0"
-
     # Log everything, and send it to stderr.
     logging.basicConfig(level=logging.INFO)
 
     try:
-        demo = UavtalkDemo()
-        demo.setup(port)
 
         demo.driveServo()  # will not return
 
