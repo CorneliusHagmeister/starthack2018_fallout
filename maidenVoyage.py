@@ -164,6 +164,8 @@ class UavtalkDemo():
         GPIO.output(distance_pin5_trigger, 1)
         sleep(0.0001)
 
+        start1, start2, start3, start4, start5 = time.time(), time.time(), time.time(), time.time(), time.time()
+
         GPIO.output(distance_pin1_trigger, 0)
         while GPIO.input(distance_pin1_read) == 0:
             start1 = time.time()
@@ -278,13 +280,13 @@ class UavtalkDemo():
                 else:
                     return False
 
-    def startup:
+    def startup():
         return False
 
-    def move:
+    def move():
         return False
 
-    def phhoto:
+    def phhoto():
         return False
 
     def rgb2hsv(self, r, g, b):
