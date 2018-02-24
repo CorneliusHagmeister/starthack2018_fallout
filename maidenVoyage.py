@@ -68,7 +68,6 @@ class UavtalkDemo():
         GPIO.output(distance_pin4_trigger, GPIO.HIGH)
         GPIO.output(distance_pin5_trigger, GPIO.HIGH)
 
-
     def fullRun(self):
 
         # start up the rotors but not moving yet
@@ -77,6 +76,9 @@ class UavtalkDemo():
         # wait until lights are green
         while not self.generator_working():
             sleep(1)
+
+        # for flying: whenever sensor < 40 - counteract. --> need for variables
+        # for throttle, pitch etc which will be configured by those events
 
         # move up to comfortable height
         self.throttle(1800)
@@ -139,13 +141,69 @@ class UavtalkDemo():
 
         print "drive servo"
         # start up the rotors but not moving yet
-        sleep(3)
+        sleep(1)
 
         self.throttle(1000)
-        sleep(5)
+        sleep(1)
 
         self.throttle(1010)
-        sleep(5)
+        sleep(1)
+
+        GPIO.output(distance_pin1_trigger, 0)
+        GPIO.output(distance_pin2_trigger, 0)#
+        GPIO.output(distance_pin3_trigger, 0)
+        GPIO.output(distance_pin4_trigger, 0)
+        GPIO.output(distance_pin5_trigger, 0)
+        sleep(0.01)
+
+        GPIO.output(distance_pin1_trigger, 1)
+        GPIO.output(distance_pin2_trigger, 1)
+        GPIO.output(distance_pin3_trigger, 1)
+        GPIO.output(distance_pin4_trigger, 1)
+        GPIO.output(distance_pin5_trigger, 1)
+        sleep(0.0001)
+
+        GPIO.output(distance_pin1_trigger, 0)
+        start1 = time.time()
+
+        while GPIO.input(start1) == 1:
+            stop1 = time.time()
+
+        GPIO.output(distance_pin2_trigger, 0)#
+        start2 = time.time()
+
+        while GPIO.input(start2) == 1:
+            stop2 = time.time()
+
+        GPIO.output(distance_pin3_trigger, 0)
+        start3 = time.time()
+
+        while GPIO.input(start3) == 1:
+            stop3 = time.time()
+
+        GPIO.output(distance_pin4_trigger, 0)
+        start4 = time.time()
+
+        while GPIO.input(start4) == 1:
+            stop4 = time.time()
+
+        GPIO.output(distance_pin5_trigger, 0)
+        start5 = time.time()
+
+        while GPIO.input(start5) == 1:
+            stop5 = time.time()
+
+        distance1 = (stop1 - start1) * 34000 / 2
+        print(distance1)
+
+        distance2 = (stop2 - start2) * 34000 / 2
+        print(distance2)
+        distance3 = (stop3 - start3) * 34000 / 2
+        print(distance3)
+        distance4 = (stop4 - start4) * 34000 / 2
+        print(distance4)
+        distance5 = (stop5 - start5) * 34000 / 2
+        print(distance5)
 
         print GPIO.input(distance_pin1_read)
         print GPIO.input(distance_pin2_read)
@@ -154,10 +212,10 @@ class UavtalkDemo():
         print GPIO.input(distance_pin5_read)
 
         self.throttle(1050)
-        sleep(5)
+        sleep(1)
 
         self.throttle(1100)
-        sleep(5)
+        sleep(1)
         #
         # self.throttle(1100)
         # sleep(2)
