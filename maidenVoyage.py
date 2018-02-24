@@ -275,7 +275,7 @@ class UavtalkDemo():
                 camera.start_preview()
                 time.sleep(2)
                 if capture_file:
-                    camera.capture('image' + self.photo_count + '.jpg')
+                    camera.capture('image' + str(self.photo_count) + '.jpg')
                 self.photo_count += 1
                 camera.capture(stream, 'rgb')
                 # Show size of RGB data
@@ -312,17 +312,17 @@ class UavtalkDemo():
             sleep(0.5)
 
     def photo(self):
-        print "position 1 is ", self.generator_working(True), ' and image count is ' + self.photo_count
+        print "position 1 is ", self.generator_working(True), ' and image count is ' + str(self.photo_count)
         # turn 90 degree
         self.yaw(1800)
         sleep(2)
         self.yaw(1500)
-        print "position 2 is ", self.generator_working(True), ' and image count is ' + self.photo_count
+        print "position 2 is ", self.generator_working(True), ' and image count is ' + str(self.photo_count)
         # turn 90 degree
         self.yaw(1800)
         sleep(2)
         self.yaw(1500)
-        print "position 3 is ", self.generator_working(True), ' and image count is ' + self.photo_count
+        print "position 3 is ", self.generator_working(True), ' and image count is ' + str(self.photo_count)
 
 
     def forward(self):
