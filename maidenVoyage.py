@@ -280,13 +280,13 @@ class UavtalkDemo():
                 else:
                     return False
 
-    def startup():
+    def startup(self):
         return False
 
-    def move():
+    def move(self):
         return False
 
-    def phhoto():
+    def phhoto(self):
         return False
 
     def rgb2hsv(self, r, g, b):
@@ -337,7 +337,7 @@ def main(args):
         demo.roll_var.stop()
     except KeyboardInterrupt:
         GPIO.cleanup()
-        
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
