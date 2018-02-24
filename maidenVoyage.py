@@ -248,8 +248,6 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('integers', metavar='N', type=int, nargs='+',
-                        help='an integer for the accumulator')
     parser.add_argument('--action', help='throttle, pitch, yaw, run_routine')
     parser.add_argument('--value')
     args = parser.parse_args()
