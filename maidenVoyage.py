@@ -273,6 +273,7 @@ class UavtalkDemo():
                 camera.resolution = (400, 400)
                 camera.start_preview()
                 time.sleep(2)
+                camera.capture('itisred.jpg')
                 camera.capture(stream, 'rgb')
                 # Show size of RGB data
                 print(stream.array.shape)
