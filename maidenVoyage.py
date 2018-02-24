@@ -335,8 +335,9 @@ def main(args):
         demo.pitch_var.stop()
         demo.yaw_var.stop()
         demo.roll_var.stop()
-        
-    GPIO.cleanup()
+
+    try:
+        GPIO.cleanup()
 
 
 if __name__ == '__main__':
