@@ -286,7 +286,7 @@ class UavtalkDemo():
                         h,s,v = self.rgb2hsv(stream.array[i][j][0],stream.array[i][j][1],stream.array[i][j][2])
                         if v >30:
                             if h<60 or h>300:
-                                red_green_balance-=3
+                                red_green_balance-=1.5
                             elif h>60 and h<180:
                                 red_green_balance+=1
 
