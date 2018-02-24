@@ -141,16 +141,16 @@ class UavtalkDemo():
         return (value - 1000) / 10
 
     def throttle(self, value):
-        self.throttle_var.ChangeDutyCycle(self.calculateDc(1100))  # where 0.0 <= dc <= 100.0
+        self.throttle_var.ChangeDutyCycle(self.calculateDc(value))  # where 0.0 <= dc <= 100.0
 
     def roll(self, value):
-        self.roll_var.ChangeDutyCycle(self.calculateDc(1100))  # where 0.0 <= dc <= 100.0
+        self.roll_var.ChangeDutyCycle(self.calculateDc(value))  # where 0.0 <= dc <= 100.0
 
     def pitch(self, value):
-        self.pitch_var.ChangeDutyCycle(self.calculateDc(1100))  # where 0.0 <= dc <= 100.0
+        self.pitch_var.ChangeDutyCycle(self.calculateDc(value))  # where 0.0 <= dc <= 100.0
 
     def yaw(self, value):
-        self.yaw_var.ChangeDutyCycle(self.calculateDc(1100))  # where 0.0 <= dc <= 100.0
+        self.yaw_var.ChangeDutyCycle(self.calculateDc(value))  # where 0.0 <= dc <= 100.0
 
     def generator_working(self):
         with picamera.PiCamera() as camera:
