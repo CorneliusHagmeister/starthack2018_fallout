@@ -17,10 +17,7 @@ pitch_pin = 37
 yaw_pin = 22
 roll_pin = 32
 
-GPIO.setup(throttle_pin, GPIO.OUT)
-GPIO.setup(pitch_pin, GPIO.OUT)
-GPIO.setup(yaw_pin, GPIO.OUT)
-GPIO.setup(roll_pin, GPIO.OUT)
+
 
 def _hex02(value):
     return "%02X" % value
@@ -28,6 +25,10 @@ def _hex02(value):
 
 class UavtalkDemo():
     def __init__(self):
+        GPIO.setup(throttle_pin, GPIO.OUT)
+        GPIO.setup(pitch_pin, GPIO.OUT)
+        GPIO.setup(yaw_pin, GPIO.OUT)
+        GPIO.setup(roll_pin, GPIO.OUT)
         self.throttle_var = GPIO.PWM(throttle_pin, 50)
         self.throttle_var.start(0)
         self.yaw_var = GPIO.PWM(yaw_pin, 50)
@@ -46,7 +47,7 @@ class UavtalkDemo():
         self.throttle(1000)
 
         # wait until lights are green
-        while !self.generator_working():
+        while not self.generator_working():
             sleep(1)
 
         # move up to comfortable height
@@ -74,7 +75,7 @@ class UavtalkDemo():
         self.row(1500)
         self.throttle(1500)
 
-        print 'position1: ' self.generator_working()
+        print 'position1: ', self.generator_working()
 
         # 90 degree turn to the left
         self.yaw(1000)
@@ -82,7 +83,7 @@ class UavtalkDemo():
         self.yaw(1500)
 
         # check generator 2
-        print 'position2: ' self.generator_working()
+        print 'position2: ', self.generator_working()
 
         # 90 degree turn to the left
         self.yaw(1000)
@@ -90,7 +91,7 @@ class UavtalkDemo():
         self.yaw(1500)
 
         # check generator 3
-        print 'position3: ' self.generator_working()
+        print 'position3: ', self.generator_working()
 
         # move left for twice the seconds
         self.row(1300)
@@ -214,8 +215,9 @@ if __name__ == '__main__':
     # Log everything, and send it to stderr.
     logging.basicConfig(level=logging.INFO)
 
-    try:
+    demo = UavTalkDemo()
 
+    try:
         demo.driveServo()  # will not return
 
     except KeyboardInterrupt:
