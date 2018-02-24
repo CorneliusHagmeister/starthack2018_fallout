@@ -20,6 +20,7 @@ roll_pin = 32
 
 class UavtalkDemo():
     def __init__(self):
+        print throttle_pin
         GPIO.setup(throttle_pin, GPIO.OUT)
         GPIO.setup(pitch_pin, GPIO.OUT)
         GPIO.setup(yaw_pin, GPIO.OUT)
@@ -149,6 +150,7 @@ class UavtalkDemo():
 
     def throttle(self, value):
         print "called throttle"
+        print self.throttle_var
         self.throttle_var.ChangeDutyCycle(self.calculateDc(value))  # where 0.0 <= dc <= 100.0
 
     def roll(self, value):
