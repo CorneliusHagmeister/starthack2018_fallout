@@ -17,12 +17,6 @@ pitch_pin = 37
 yaw_pin = 22
 roll_pin = 32
 
-
-
-def _hex02(value):
-    return "%02X" % value
-
-
 class UavtalkDemo():
     def __init__(self):
         GPIO.setup(throttle_pin, GPIO.OUT)
@@ -215,7 +209,7 @@ if __name__ == '__main__':
     # Log everything, and send it to stderr.
     logging.basicConfig(level=logging.INFO)
 
-    demo = UavTalkDemo()
+    demo = UavtalkDemo()
 
     try:
         demo.driveServo()  # will not return
