@@ -392,6 +392,11 @@ def main(args):
             demo.photo()
         elif args.action == "run_routine":
             demo.driveServo()  # will not return
+        elif args.action == "test_camera":
+            if (demo.generator_working()):
+                print "red"
+            else:
+                print "green"
 
         demo.throttle_var.stop()
         demo.pitch_var.stop()
