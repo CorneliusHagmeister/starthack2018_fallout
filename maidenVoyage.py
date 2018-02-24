@@ -1,4 +1,5 @@
 import logging
+import argparse
 import serial
 import traceback
 import sys
@@ -199,26 +200,35 @@ def printUsage():
     appName = os.path.basename(sys.argv[0])
 
 
-if __name__ == '__main__':
+def main(args):
 
-    if len(sys.argv) > 2:
-        print "ERROR: Incorrect number of arguments"
-        printUsage()
+    if args.port == "":
         sys.exit(2)
+    if args.action != "" and args.value is "":
+        sys.exit(2)
+
+    port = args.port
 
     # Log everything, and send it to stderr.
     logging.basicConfig(level=logging.INFO)
 
-    demo = UavtalkDemo()
-
     try:
-        demo.driveServo()  # will not return
+        demo = UavtalkDemo()
+        if args.action is "throttle":
+            demo.throttle(args.value)
+        elif args.action is "pitch":
+            demo.pith(args.value)
+        elif args.action is "yaw":
+            demo.yaw(args.value)
+        elif args.action is "run_routine":
+            demo.driveServo()  # will not return
 
     except KeyboardInterrupt:
         pass
     except Exception, e:
         print
-        print "An error occured: ", e
+        print
+        "An error occured: ", e
         print
         traceback.print_exc()
 
@@ -228,3 +238,15 @@ if __name__ == '__main__':
         demo.stop()
     except Exception:
         pass
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('integers', metavar='N', type=int, nargs='+',
+                        help='an integer for the accumulator')
+    parser.add_argument('--action', help='throttle, pitch, yaw, run_routine')
+    parser.add_argument('--value')
+    parser.add_argument('port', help='set the port  which is used to control the actuators')
+    args = parser.parse_args()
+    main(parser.parse_args())
+
