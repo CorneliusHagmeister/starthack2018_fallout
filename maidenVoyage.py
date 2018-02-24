@@ -6,6 +6,7 @@ import sys
 import picamera
 import picamera.array
 import math
+import time
 
 from time import sleep
 import RPi.GPIO as GPIO
@@ -164,33 +165,33 @@ class UavtalkDemo():
         sleep(0.0001)
 
         GPIO.output(distance_pin1_trigger, 0)
-        start1 = time.time()
-
-        while GPIO.input(start1) == 1:
+        while GPIO.input(distance_pin1_read) == 0:
+            start1 = time.time()
+        while GPIO.input(distance_pin1_read) == 1:
             stop1 = time.time()
 
         GPIO.output(distance_pin2_trigger, 0)#
-        start2 = time.time()
-
-        while GPIO.input(start2) == 1:
+        while GPIO.input(distance_pin2_read) == 0:
+            start2 = time.time()
+        while GPIO.input(distance_pin2_read) == 1:
             stop2 = time.time()
 
         GPIO.output(distance_pin3_trigger, 0)
-        start3 = time.time()
-
-        while GPIO.input(start3) == 1:
+        while GPIO.input(distance_pin3_read) == 0:
+            start3 = time.time()
+        while GPIO.input(distance_pin3_read) == 1:
             stop3 = time.time()
 
         GPIO.output(distance_pin4_trigger, 0)
-        start4 = time.time()
-
-        while GPIO.input(start4) == 1:
+        while GPIO.input(distance_pin4_read) == 0:
+            start4 = time.time()
+        while GPIO.input(distance_pin4_read) == 1:
             stop4 = time.time()
 
         GPIO.output(distance_pin5_trigger, 0)
-        start5 = time.time()
-
-        while GPIO.input(start5) == 1:
+        while GPIO.input(distance_pin5_read) == 0:
+            start5 = time.time()
+        while GPIO.input(distance_pin5_read) == 1:
             stop5 = time.time()
 
         distance1 = (stop1 - start1) * 34000 / 2
