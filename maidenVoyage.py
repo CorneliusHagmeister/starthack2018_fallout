@@ -168,12 +168,12 @@ def printUsage():
 
 if __name__ == '__main__':
 
-    if len(sys.argv) != 2:
+    if len(sys.argv) > 2:
         print "ERROR: Incorrect number of arguments"
         printUsage()
         sys.exit(2)
 
-    port = sys.argv[1]
+    port = sys.argv[1] or "/dev/ttyAMA0"
 
     # Log everything, and send it to stderr.
     logging.basicConfig(level=logging.INFO)
