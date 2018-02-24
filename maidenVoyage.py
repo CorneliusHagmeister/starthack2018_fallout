@@ -295,14 +295,16 @@ class UavtalkDemo():
     def startup(self):
         print "startup initiated"
         # wait until lights are green
-        self.throttle(1000)
         self.arm(1000)
+        sleep(1)
+        self.throttle(1000)
         while not self.generator_working(False):
             sleep(1)
 
         # drone must accelerate audibly
-        self.throttle(2000)
         self.arm(2000)
+        sleep(1)
+        self.throttle(2000)
         # drone must level itself audibly to height
 
         while True:
