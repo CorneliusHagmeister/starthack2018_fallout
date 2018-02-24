@@ -105,8 +105,11 @@ class UavtalkDemo():
     def driveServo(self):
 
         # start up the rotors but not moving yet
-        self.throttle(1100)
+        self.throttle(1600)
+        sleep(5)
 
+        self.throttle(1200)
+        sleep(5)
         #
         # self.throttle(1100)
         # sleep(2)
@@ -141,13 +144,13 @@ class UavtalkDemo():
         self.throttle_var.ChangeDutyCycle(self.calculateDc(1100))  # where 0.0 <= dc <= 100.0
 
     def roll(self, value):
-        GPIO.output()
+        self.roll_var.ChangeDutyCycle(self.calculateDc(1100))  # where 0.0 <= dc <= 100.0
 
     def pitch(self, value):
-        GPIO.output()
+        self.pitch_var.ChangeDutyCycle(self.calculateDc(1100))  # where 0.0 <= dc <= 100.0
 
     def yaw(self, value):
-        GPIO.output()
+        self.yaw_var.ChangeDutyCycle(self.calculateDc(1100))  # where 0.0 <= dc <= 100.0
 
     def generator_working(self):
         with picamera.PiCamera() as camera:
@@ -216,12 +219,16 @@ def main(args):
         demo = UavtalkDemo()
         if args.action is "throttle":
             demo.throttle(args.value)
+            sleep(5)
         elif args.action is "pitch":
             demo.pith(args.value)
+            sleep(5)
         elif args.action is "yaw":
             demo.yaw(args.value)
+            sleep(5)
         elif args.action is "run_routine":
             demo.driveServo()  # will not return
+            sleep(5)
 
     except KeyboardInterrupt:
         pass
@@ -249,4 +256,3 @@ if __name__ == '__main__':
     parser.add_argument('port', help='set the port  which is used to control the actuators')
     args = parser.parse_args()
     main(parser.parse_args())
-
