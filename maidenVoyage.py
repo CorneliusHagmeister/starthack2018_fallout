@@ -279,13 +279,13 @@ class UavtalkDemo():
                 print(stream.array.shape)
                 red_green_balance=0
                 for i in range(0,stream.array.shape[0]):
-                    print stream.array[i]
-                    h,s,v = self.rgb2hsv(stream.array[i][0],stream.array[i][1],stream.array[i][2])
-                    if v <50:
-                        if h<60 or h>300:
-                            red_green_balance-=1
-                        elif h>60 and h<180:
-                            red_green_balance+=1
+                    for j in range(0,stream.array.shape[1]):
+                        h,s,v = self.rgb2hsv(stream.array[i][j][0],stream.array[i][j][1],stream.array[i][j][2])
+                        if v <50:
+                            if h<60 or h>300:
+                                red_green_balance-=1
+                            elif h>60 and h<180:
+                                red_green_balance+=1
 
                 if red_green_balance>0:
                     return True
