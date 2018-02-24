@@ -25,6 +25,7 @@ distance_pin5_read = 35
 
 class UavtalkDemo():
     def __init__(self):
+        photo_count = 0
         #set up GPIO
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
@@ -267,27 +268,29 @@ class UavtalkDemo():
     def yaw(self, value):
         self.yaw_var.ChangeDutyCycle(self.calculateDc(value))  # where 0.0 <= dc <= 100.0
 
-    def generator_working(self):
+    def generator_working(self, capture_file):
         with picamera.PiCamera() as camera:
             with picamera.array.PiRGBArray(camera) as stream:
                 camera.resolution = (400, 400)
                 camera.start_preview()
                 time.sleep(2)
-                camera.capture('itisred.jpg')
+                if capture_file:
+                    camera.capture('image' + self.photo_count + '.jpg')
+                self.photo_count += 1
                 camera.capture(stream, 'rgb')
                 # Show size of RGB data
                 print(stream.array.shape)
                 red_green_balance=0
-                for i in range(0,stream.array.shape[0]):
-                    for j in range(0,stream.array.shape[1]):
+                for i in range(0,stream.array.shape[0],2):
+                    for j in range(0,stream.array.shape[1],2):
                         h,s,v = self.rgb2hsv(stream.array[i][j][0],stream.array[i][j][1],stream.array[i][j][2])
                         if v >30:
                             if h<60 or h>300:
-                                red_green_balance-=1
+                                red_green_balance-=3
                             elif h>60 and h<180:
                                 red_green_balance+=1
 
-                if red_green_balance>0:
+                if red_green_balance > 0:
                     return True
                 else:
                     return False
@@ -295,20 +298,32 @@ class UavtalkDemo():
     def startup(self):
         print "startup initiated"
         # wait until lights are green
-        while not self.generator_working():
+        while not self.generator_working(False):
             sleep(1)
 
         # drone must accelerate audibly
         self.throttle(2000)
-        sleep(1)
         # drone must level itself audibly to height
 
-        distance = self.getBottomDistance()
-        self.throttle(2000 - distance / 1.6)
-        # speed is controlled visibly in fine steps
+        while True:
+            distance = self.getBottomDistance()
+            self.throttle(2000 - distance / 1.6)
+            # speed is controlled visibly in fine steps
+            sleep(0.5)
 
     def photo(self):
-        return False
+        print "position 1 is ", self.generator_working(True), ' and image count is ' + self.photo_count
+        # turn 90 degree
+        self.yaw(1800)
+        sleep(2)
+        self.yaw(1500)
+        print "position 2 is ", self.generator_working(True), ' and image count is ' + self.photo_count
+        # turn 90 degree
+        self.yaw(1800)
+        sleep(2)
+        self.yaw(1500)
+        print "position 3 is ", self.generator_working(True), ' and image count is ' + self.photo_count
+
 
     def forward(self):
         print "moving forward"
