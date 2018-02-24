@@ -206,11 +206,6 @@ def printUsage():
 
 def main(args):
 
-    if args.port == "":
-        sys.exit(2)
-    if args.action != "" and args.value is "":
-        sys.exit(2)
-
     # Log everything, and send it to stderr.
     logging.basicConfig(level=logging.INFO)
 
