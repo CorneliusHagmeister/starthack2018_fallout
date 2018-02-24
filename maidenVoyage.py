@@ -335,10 +335,9 @@ def main(args):
         demo.pitch_var.stop()
         demo.yaw_var.stop()
         demo.roll_var.stop()
-
-    try:
+    except KeyboardInterrupt:
         GPIO.cleanup()
-
+        
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
