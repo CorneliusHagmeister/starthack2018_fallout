@@ -233,22 +233,6 @@ def main(args):
     demo = UavtalkDemo()
     demo.driveServo()
 
-    except KeyboardInterrupt:
-        pass
-    except Exception, e:
-        print
-        print
-        "An error occured: ", e
-        print
-        traceback.print_exc()
-
-    print
-
-    try:
-        demo.stop()
-    except Exception:
-        pass
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
