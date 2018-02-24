@@ -26,20 +26,19 @@ class UavtalkDemo():
         GPIO.setup(pitch_pin, GPIO.OUT)
         GPIO.setup(yaw_pin, GPIO.OUT)
         GPIO.setup(roll_pin, GPIO.OUT)
+        GPIO.setup(arm_pin, GPIO.OUT)
 
+        GPIO.output(arm_pin, GPIO.HIGH)
         self.throttle_var = GPIO.PWM(throttle_pin, 50)
-        self.throttle_var.start(0)
+        self.throttle_var.start(7)
         self.yaw_var = GPIO.PWM(yaw_pin, 50)
-        self.yaw_var.start(0)
+        self.yaw_var.start(7)
         self.pitch_var = GPIO.PWM(pitch_pin, 50)
-        self.pitch_var.start(0)
+        self.pitch_var.start(7)
         self.roll_var = GPIO.PWM(roll_pin, 50)
-        self.roll_var.start(0)
+        self.roll_var.start(7)
 
     def fullRun(self):
-        print "Taking control of self.actuatorCmd"
-        self.objMan.ActuatorCommand.metadata.access = UAVMetaDataObject.Access.READONLY
-        self.objMan.ActuatorCommand.metadata.updated()
 
         # start up the rotors but not moving yet
         self.throttle(1000)
@@ -238,6 +237,12 @@ def main(args):
     #         sleep(5)
     demo = UavtalkDemo()
     demo.driveServo()
+
+    demo.throttle_var.stop()
+    demo.pitch_var.stop()
+    demo.yaw_var.stop()
+    demo.roll_var.stop()
+    GPIO.cleanup()
 
 
 if __name__ == '__main__':
