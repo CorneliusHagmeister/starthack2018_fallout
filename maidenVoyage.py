@@ -2,6 +2,9 @@ import logging
 import serial
 import traceback
 import sys
+import picamera
+import picamera.array
+import math
 
 from time import sleep
 from librepilot.uavtalk.uavobject import *
@@ -122,28 +125,31 @@ class UavtalkDemo():
         self.objMan.ActuatorCommand.metadata.updated()
 
         while True:
-            throttle(1100)
+            # start up the rotors but not moving yet
+            self.throttle(1100)
             sleep(2)
+            print "I am working so well : ",self.generatorWorking()
 
-            throttle(1700)
+            # lift up for 1 sec
+            self.throttle(1700)
             sleep(1)
 
-            throttle(1500)
-            yaw(1000)
+            self.throttle(1500)
+            self.yaw(1000)
             sleep(3)
 
-            yaw(2000)
+            self.yaw(2000)
             sleep(3)
 
-            yaw(1000)
+            self.yaw(1000)
             sleep(3)
 
-            throttle(1700)
-            pitch(1400)
+            self.throttle(1700)
+            self.pitch(1400)
             sleep(1)
 
-            pitch(1600)
-            throttle(1000)
+            self.pitch(1600)
+            self.throttle(1000)
             sleep(4)
 
     def throttle(self, value):
@@ -161,6 +167,53 @@ class UavtalkDemo():
     def yaw(self, value):
         self.objMan.ActuatorCommand.Channel.value[3] = value
         self.objMan.ActuatorCommand.updated()
+
+    def generatorWorking(self):
+        with picamera.PiCamera() as camera:
+            with picamera.array.PiRGBArray(camera) as stream:
+                camera.resolution = (400, 400)
+                camera.start_preview()
+                time.sleep(2)
+                camera.capture(stream, 'rgb')
+                # Show size of RGB data
+                print(stream.array.shape)
+                red_green_balance=0
+                for i in range(0,stream.array.shape[0]/3):
+                    h,s,v = self.rgb2hsv(stream.array[i],stream.array[i+1],stream.array[i+2])
+                    if v <50:
+                        if h<60 or h>300:
+                            red_green_balance-=1
+                        elif h>60 and h<180:
+                            red_green_balance+=1
+
+                if red_green_balance>0:
+                    return True
+                else:
+                    return False
+
+
+
+    def rgb2hsv(self, r, g, b):
+        r, g, b = r / 255.0, g / 255.0, b / 255.0
+        mx = max(r, g, b)
+        mn = min(r, g, b)
+        df = mx - mn
+        if mx == mn:
+            h = 0
+        elif mx == r:
+            h = (60 * ((g - b) / df) + 360) % 360
+        elif mx == g:
+            h = (60 * ((b - r) / df) + 120) % 360
+        elif mx == b:
+            h = (60 * ((r - g) / df) + 240) % 360
+        if mx == 0:
+            s = 0
+        else:
+            s = df / mx
+        v = mx
+        return h, s, v
+
+
 
 def printUsage():
     appName = os.path.basename(sys.argv[0])
