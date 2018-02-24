@@ -240,8 +240,18 @@ class UavtalkDemo():
         # self.throttle(1000)
         # sleep(4)
 
+    def getBottomDistance():
+        GPIO.output(distance_pin5_trigger, 0)
+        while GPIO.input(distance_pin5_read) == 0:
+            start5 = time.time()
+        while GPIO.input(distance_pin5_read) == 1:
+            stop5 = time.time()
+
+        return distance5 = (stop5 - start5) * 34000 / 2
+
+
     def calculateDc(self, value):
-        return ((value - 1000) / 10)
+        return ((value - 1000) / 10) / 20 + 5
 
     def throttle(self, value):
         print "called throttle"
@@ -281,13 +291,57 @@ class UavtalkDemo():
                     return False
 
     def startup(self):
+
+        # wait until lights are green
+        while not self.generator_working():
+            sleep(1)
+
+        # drone must accelerate audibly
+        self.throttle(2000)
+        sleep(1)
+        # drone must level itself audibly to height
+
+        distance = self.getBottomDistance()
+        self.throttle(2000 - distance / 1.6)
+        # speed is controlled visibly in fine steps
+
+    def photo(self):
         return False
 
-    def move(self):
-        return False
+    def forward(self):
+        try:
+            self.pitch(1200)
+            self.throttle(1700)
+            while True:
+                sleep(1)
+        except KeyboardInterrupt as e:
+            print "stopped by user"
 
-    def phhoto(self):
-        return False
+    def backward(self):
+        try:
+            self.pitch(1800)
+            self.throttle(1700)
+            while True:
+                sleep(1)
+        except KeyboardInterrupt as e:
+            print "stopped by user"
+
+    def yaw(self):
+        try:
+            self.yaw(1800)
+            while True:
+                sleep(1)
+        except KeyboardInterrupt as e:
+            print "stopped by user"
+
+    def sidewards(self):
+        try:
+            self.roll(1800)
+            self.throttle(1700)
+            while True:
+                sleep(1)
+        except KeyboardInterrupt as e:
+            print "stopped by user"
 
     def rgb2hsv(self, r, g, b):
         r, g, b = r / 255.0, g / 255.0, b / 255.0
@@ -310,11 +364,6 @@ class UavtalkDemo():
         return h, s, v
 
 
-
-def printUsage():
-    appName = os.path.basename(sys.argv[0])
-
-
 def main(args):
 
     # Log everything, and send it to stderr.
@@ -326,6 +375,14 @@ def main(args):
             demo.startup()
         elif args.action is "2":
             demo.move()
+        elif args.action is "forward":
+            demo.forward()
+        elif args.action is "backward":
+            demo.backward()
+        elif args.action is "sidewards":
+            demo.sidwards()
+        elif args.action is "yaw":
+            demo.yaw()
         elif args.action is "3":
             demo.photo()
         elif args.action is "run_routine":
