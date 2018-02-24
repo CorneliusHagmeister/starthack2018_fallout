@@ -119,38 +119,106 @@ class UavtalkDemo():
     #    i = int((i+1)*15)
     #    print "-"*i+"*"+"-"*(30-i)+" \r",
 
+    def fullRun(self):
+        print "Taking control of self.actuatorCmd"
+        self.objMan.ActuatorCommand.metadata.access = UAVMetaDataObject.Access.READONLY
+        self.objMan.ActuatorCommand.metadata.updated()
+
+        # start up the rotors but not moving yet
+        self.throttle(1000)
+
+        # wait until lights are green
+        while !self.generator_working():
+            sleep(1)
+
+        # move up to comfortable height
+        self.throttle(1800)
+        sleep(1)
+        self.throttle(1500)
+
+        # move forward until distance is halved, count the seconds
+        self.pitch(1300)
+        self.throttle(1700)
+        start_time = time.time()
+            # check when we reach the half way point - count seconds
+        elapsed_time = 2 #time.time() - start_time
+
+        # stop
+        self.pitch(1500)
+        self.throttle(1500)
+
+        # move left for twice the seconds
+        self.row(1300)
+        self.throttle(1700)
+        sleep(elapsed_time * 2)
+
+        # check generator
+        self.row(1500)
+        self.throttle(1500)
+
+        print 'position1: ' self.generator_working()
+
+        # 90 degree turn to the left
+        self.yaw(1000)
+        sleep(1)
+        self.yaw(1500)
+
+        # check generator 2
+        print 'position2: ' self.generator_working()
+
+        # 90 degree turn to the left
+        self.yaw(1000)
+        sleep(1)
+        self.yaw(1500)
+
+        # check generator 3
+        print 'position3: ' self.generator_working()
+
+        # move left for twice the seconds
+        self.row(1300)
+        self.throttle(1700)
+        sleep(elapsed_time * 2)
+
+        # move forward for the seconds
+        self.pitch(1300)
+        self.throttle(1700)
+        sleep(elapsed_time)
+
+        # drop down
+        self.throttle(1000)
+        sleep(10)
+
     def driveServo(self):
         print "Taking control of self.actuatorCmd"
         self.objMan.ActuatorCommand.metadata.access = UAVMetaDataObject.Access.READONLY
         self.objMan.ActuatorCommand.metadata.updated()
 
-        while True:
-            # start up the rotors but not moving yet
-            self.throttle(1100)
-            sleep(2)
-            print "I am working so well : ",self.generatorWorking()
+        # start up the rotors but not moving yet
+        self.throttle(1100)
+        sleep(2)
+        print "I am working so well : ",self.generator_working()
 
-            # lift up for 1 sec
-            self.throttle(1700)
-            sleep(1)
+        # lift up for 1 sec
+        self.throttle(1700)
+        sleep(1)
 
-            self.throttle(1500)
-            self.yaw(1000)
-            sleep(3)
+        self.throttle(1500)
+        self.yaw(1000)
+        sleep(3)
 
-            self.yaw(2000)
-            sleep(3)
+        self.yaw(2000)
+        sleep(3)
 
-            self.yaw(1000)
-            sleep(3)
+        self.yaw(1000)
+        sleep(3)
 
-            self.throttle(1700)
-            self.pitch(1400)
-            sleep(1)
+        self.throttle(1700)
+        self.pitch(1400)
+        sleep(1)
 
-            self.pitch(1600)
-            self.throttle(1000)
-            sleep(4)
+        self.pitch(1600)
+        self.throttle(1000)
+        sleep(4)
 
     def throttle(self, value):
         self.objMan.ActuatorCommand.Channel.value[0] = value
@@ -168,7 +236,7 @@ class UavtalkDemo():
         self.objMan.ActuatorCommand.Channel.value[3] = value
         self.objMan.ActuatorCommand.updated()
 
-    def generatorWorking(self):
+    def generator_working(self):
         with picamera.PiCamera() as camera:
             with picamera.array.PiRGBArray(camera) as stream:
                 camera.resolution = (400, 400)
