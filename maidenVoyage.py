@@ -10,6 +10,7 @@ import time
 
 from time import sleep
 import RPi.GPIO as GPIO
+import image
 
 distance_pin1_trigger = 11
 distance_pin2_trigger = 13
@@ -316,17 +317,25 @@ class UavtalkDemo():
             sleep(0.5)
 
     def photo(self):
-        print "position 1 is ", self.generator_working(True), ' and image count is ' + str(self.photo_count)
         # turn 90 degree
-        self.yaw(1800)
-        sleep(2)
-        self.yaw(1500)
-        print "position 2 is ", self.generator_working(True), ' and image count is ' + str(self.photo_count)
-        # turn 90 degree
-        self.yaw(1800)
-        sleep(2)
-        self.yaw(1500)
-        print "position 3 is ", self.generator_working(True), ' and image count is ' + str(self.photo_count)
+        for i in range(3):
+            Recog = self.generator_working(True);
+            print "Postiion "+ str(i) + " is " +str(Recog) + " and image count is " + str(self.photo_count)
+            self.yaw(1800)
+            if (Recog):
+                image = Image.open('image' + str(i) + '.jpg')
+                image.show()
+        # print "position 1 is ", , ' and image count is ' + str(self.photo_count)
+
+        # self.yaw(1800)
+        # sleep(2)
+        # self.yaw(1500)
+        # print "position 2 is ", self.generator_working(True), ' and image count is ' + str(self.photo_count)
+        # # turn 90 degree
+        # self.yaw(1800)
+        # sleep(2)
+        # self.yaw(1500)
+        # print "position 3 is ", self.generator_working(True), ' and image count is ' + str(self.photo_count)
 
 
     def forward(self):
