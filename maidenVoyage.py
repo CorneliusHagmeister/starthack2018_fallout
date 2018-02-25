@@ -322,7 +322,7 @@ class UavtalkDemo():
             Recog = self.generator_working(True);
             print "Postiion "+ str(i) + " is " +str(Recog) + " and image count is " + str(self.photo_count)
             self.yaw(1800)
-            if (Recog):
+            if (not Recog):
                 image = Image.open('image' + str(i) + '.jpg')
                 image.show()
         # print "position 1 is ", , ' and image count is ' + str(self.photo_count)
