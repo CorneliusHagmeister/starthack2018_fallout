@@ -324,10 +324,10 @@ class UavtalkDemo():
             self.yaw(1800)
             if (Recog == False):
                 print ("Show this image")
-                image = Image.open('image' + str(i) + '.jpg').show()
+                image = Image.open('image' + str(i) + '.jpg').show(command='fim')
         # print "position 1 is ", , ' and image count is ' + str(self.photo_count)
 
-        # self.yaw(1800)
+        # self.yaw(1800)S
         # sleep(2)
         # self.yaw(1500)
         # print "position 2 is ", self.generator_working(True), ' and image count is ' + str(self.photo_count)
