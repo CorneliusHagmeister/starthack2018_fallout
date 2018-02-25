@@ -320,11 +320,11 @@ class UavtalkDemo():
         # turn 90 degree
         for i in range(3):
             Recog = self.generator_working(True);
-            print "Postiion "+ str(i) + " is " +str(Recog) + " and image count is " + str(self.photo_count)
+            print "Postiion "+ str(i+1) + " is " +str(Recog) + " and image count is " + str(self.photo_count)
             self.yaw(1800)
-            if (not Recog):
-                image = Image.open('image' + str(i) + '.jpg')
-                image.show()
+            if (Recog == False):
+                print ("Show this image")
+                image = Image.open('image' + str(i) + '.jpg').show()
         # print "position 1 is ", , ' and image count is ' + str(self.photo_count)
 
         # self.yaw(1800)
