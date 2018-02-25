@@ -237,6 +237,8 @@ class UavtalkDemo():
         # sleep(4)
 
     def getBottomDistance(self):
+        start5 = time.time()
+        stop5 = time.time()
         GPIO.output(distance_pin5_trigger, 0)
         while GPIO.input(distance_pin5_read) == 0:
             start5 = time.time()
