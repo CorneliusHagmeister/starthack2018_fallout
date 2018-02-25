@@ -298,14 +298,14 @@ class UavtalkDemo():
         print "startup initiated"
         # wait until lights are green
         self.arm(1000)
-        sleep(1)
+        sleep(3)
         self.throttle(1000)
         while not self.generator_working(False):
             sleep(1)
 
         # drone must accelerate audibly
         self.arm(2000)
-        sleep(1)
+        sleep(3)
         self.throttle(2000)
         # drone must level itself audibly to height
 
@@ -331,10 +331,11 @@ class UavtalkDemo():
 
     def forward(self):
         print "moving forward"
+        self.arm(1900)
+        sleep(3)
         try:
             self.pitch(1200)
             self.throttle(1700)
-            self.arm(1700)
 
             while True:
                 sleep(1)
@@ -343,6 +344,8 @@ class UavtalkDemo():
 
     def backward(self):
         print "moving backward"
+        self.arm(1900)
+        sleep(3)
         try:
             self.pitch(1800)
             self.throttle(1700)
@@ -355,6 +358,8 @@ class UavtalkDemo():
 
     def yaw_usr(self):
         print "turning around"
+        self.arm(1900)
+        sleep(3)
         try:
             self.yaw(1800)
             while True:
@@ -364,6 +369,8 @@ class UavtalkDemo():
 
     def sidewards(self):
         print "moving sidwards"
+        self.arm(1900)
+        sleep(3)
         try:
             self.roll(1800)
             self.throttle(1700)
