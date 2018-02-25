@@ -10,7 +10,7 @@ import time
 
 from time import sleep
 import RPi.GPIO as GPIO
-from PIL import image
+from PIL import Image
 
 distance_pin1_trigger = 11
 distance_pin2_trigger = 13
