@@ -16,8 +16,8 @@
       <file leaf-file-name="maidenVoyage.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/maidenVoyage.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="412">
-              <caret line="329" column="25" lean-forward="false" selection-start-line="329" selection-start-column="25" selection-end-line="329" selection-end-column="25" />
+            <state relative-caret-position="487">
+              <caret line="330" column="26" lean-forward="true" selection-start-line="330" selection-start-column="26" selection-end-line="330" selection-end-column="26" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -33,6 +33,7 @@
       <find>photo()</find>
       <find>yaw</find>
       <find>Recog</find>
+      <find>image</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -183,8 +184,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/maidenVoyage.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="329" column="25" lean-forward="false" selection-start-line="329" selection-start-column="25" selection-end-line="329" selection-end-column="25" />
+        <state relative-caret-position="487">
+          <caret line="330" column="26" lean-forward="true" selection-start-line="330" selection-start-column="26" selection-end-line="330" selection-end-column="26" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>

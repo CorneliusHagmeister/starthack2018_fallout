@@ -10,7 +10,9 @@ import time
 
 from time import sleep
 import RPi.GPIO as GPIO
-from PIL import Image
+# from PIL import Image
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
 distance_pin1_trigger = 11
 distance_pin2_trigger = 13
@@ -324,7 +326,10 @@ class UavtalkDemo():
             self.yaw(1800)
             if (Recog == False):
                 print ("Show this image")
-                image = Image.open('image' + str(i) + '.jpg').show(command='fim')
+                img = mpimg.imread('image' + str(self.photo_count) + '.jpg')
+                plt.imshow(img)
+                plt.show()
+                # image = Image.open().show(command='fim')
         # print "position 1 is ", , ' and image count is ' + str(self.photo_count)
 
         # self.yaw(1800)S
